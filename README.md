@@ -37,3 +37,5 @@
    - drain succeeds
 4. `ts-node sample-non-sessions.ts >out-4.log 2>&1` (with maxMessageCount=10000 and maxWaitTime=1000)
    - drain succeeds for the non-sessions case
+
+### Reference - https://github.com/Azure/azure-sdk-for-js/issues/8875
