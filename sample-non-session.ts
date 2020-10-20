@@ -1,6 +1,9 @@
 import { ServiceBusClient, ServiceBusMessage } from "@azure/service-bus";
-const connectionString =
-  "Endpoint=sb://harshan-servicebus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=olo6gItgNltpOpzkwIFdq92MuLoFhT4MX+nMpFLK3i8=";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const connectionString = process.env.SERVICEBUS_CONNECTION_STRING || "";
 const qName = "partitioned-queue";
 async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
