@@ -1,20 +1,27 @@
-import { ServiceBusClient, ServiceBusMessage } from "@azure/service-bus";
+import {
+  ServiceBusAdministrationClient,
+  ServiceBusClient,
+  ServiceBusMessage,
+} from "@azure/service-bus";
 
 import * as dotenv from "dotenv";
 dotenv.config();
 
 const connectionString = process.env.SERVICEBUS_CONNECTION_STRING || "";
-const qName = "partitioned-queue";
+const qName = `queue-${Math.floor(Math.random() * 10000)}`;
 async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 async function run() {
+  const adminClient = new ServiceBusAdministrationClient(connectionString);
+  // await adminClient.createQueue(qName, { enablePartitioning: true });
+  await adminClient.createQueue(qName, { enablePartitioning: false });
+
   const client = new ServiceBusClient(connectionString);
   const msgs: ServiceBusMessage[] = [];
 
   for (let i = 0; i < 3000; i++) {
-    // msgs.push({ body: `message ${i}` });
-    msgs.push({ body: `message ${i}`, sessionId: "random-id" });
+    msgs.push({ body: `message ${i}` });
   }
   await client.createSender(qName).sendMessages(msgs);
   console.log("messages sent");
